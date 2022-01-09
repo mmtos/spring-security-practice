@@ -1,6 +1,9 @@
 ## 예제 URL
-- https://www.baeldung.com/spring-session
-- 레퍼런스 https://docs.spring.io/spring-security/site/docs/5.0.5.RELEASE/reference/htmlsingle/
+- https://spring.io/guides/gs/securing-web/
+- https://thecodinglog.github.io/spring/security/2018/05/25/spring-security-2.html
+- 레퍼런스
+  - https://spring.io/guides/topicals/spring-security-architecture/
+  - https://docs.spring.io/spring-security/site/docs/5.0.5.RELEASE/reference/htmlsingle/
 
 ## SpringBoot Configuration
 #### @Enable Config

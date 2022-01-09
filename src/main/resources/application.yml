@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    username: secu_user
+    password: secu
+    url: jdbc:mysql://localhost:3306/secu_db?serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    platform: mysql
+    #initialization-mode: always
+    initialization-mode: never
+
+logging:
+  level:
+    root: INFO
+    sql: DEBUG
+    org.springframework:
+      security: DEBUG
+
