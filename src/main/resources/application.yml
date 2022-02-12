@@ -5,8 +5,14 @@ spring:
     url: jdbc:mysql://localhost:3306/secu_db?serverTimezone=UTC&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     platform: mysql
+    # schema-mysql.sql 실행 여부.
     #initialization-mode: always
     initialization-mode: never
+  jpa:
+    show-sql: true
+    hibernate:
+      # 기존 테이블 삭제후 자동생성
+      ddl-auto: create
 
 logging:
   level:
