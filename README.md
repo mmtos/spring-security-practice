@@ -13,22 +13,6 @@
   - Enabling built-in Spring features using @Enable annotations
   - Spring features such as asynchronous method execution, scheduled task execution, annotation driven transaction management, and even Spring MVC can be enabled and configured from @Configuration classes using their respective "@Enable" annotations. See @EnableAsync, @EnableScheduling, @EnableTransactionManagement, @EnableAspectJAutoProxy, and @EnableWebMvc for details.
 
-#### @EnableWebSecurity 살펴보기 
-- WebSecurityConfiguration
-  - WebSecurity 생성 : setFilterChainProxySecurityConfigurer()
-  - FilterChain 생성 : springSecurityFilterChain()
-  - 커스터마이징 방법 : Customizations can be made to WebSecurity by extending WebSecurityConfigurerAdapter and exposing it as a Configuration or implementing WebSecurityConfigurer and exposing it as a Configuration.
-  
-- SpringWebMvcImportSelector
-  - 클래스로더 내에 DispatcherServlet있는 경우만 WebMvcSecurityConfiguration 수행
-    - csrf, auth principal, security context resolver 등록 : addArgumentResolvers()
-    - csrf 관련 처리 : requestDataValueProcessor
-- OAuth2ImportSelector (생략)
-- HttpSecurityConfiguration
-  - httpSecurity default 설정하는 부분.
-- EnableGlobalAuthentication
-  - @Import({AuthenticationConfiguration.class})
-
 #### @Configuration(proxyBeanMethods = false)
 ```
 * javadoc 전문
