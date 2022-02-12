@@ -5,6 +5,58 @@
   - https://spring.io/guides/topicals/spring-security-architecture/
   - https://docs.spring.io/spring-security/site/docs/5.0.5.RELEASE/reference/htmlsingle/
 
+- custom table 사용하기 : https://www.baeldung.com/spring-security-authentication-with-a-database
+- 
+
+## TODO 
+- [X] Spring Security 기본 테이블이 아닌 custom 테이블 사용하기 (JPA에서 생성..)
+- [ ] 회원가입 및 탈퇴, 권한 구현.
+- [ ] JWT 도입
+
+## JPA
+### Entity
+- @Id : 직접 할당
+- @Id @GeneratedValue : 자동생성 
+- https://gmlwjd9405.github.io/2019/08/12/primary-key-mapping.html
+### table 생성 설정
+- spring boot의 경우 spring.jpa로 시작하는 설정프로퍼티를 통해 설정 가능함
+- spring.jpa.hibernate.ddl-auto: create
+- spring.jpa.show-sql: true
+- https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=rorean&logNo=221587154921
+
+## UserDetails
+### 디폴트 구현체 
+- org.springframework.security.core.userdetails.User 
+### getAuthorities : 
+- GrantedAuthority타입의 컬렉션을 반환. return되는 Collection은 null을 포함해서는 안됨.  null을 리턴해서도 안됨.
+- SimpleGrantedAuthority, 
+#### Authorities 
+- SimpleGrantedAuthority (기본)
+
+## userDetailsPasswordService ? 
+- 1. 인증 성공후 DaoAuthenticationProvider.createSuccessAuthentication에서 리턴할 Authentication에 들어있는 user password를 변경하는데 쓰임.
+- 
+
+## 유용한 디버깅 중단점
+- Spring Security 시작점 : DelegatingFilterProxy.doFilter
+- SecurityContextPersistenceFilter : 인증시작전에 SecurityContext를 생성, 인증 절차 종료후 clear()
+- MyUserDetailService가 제대로 등록되었는지 확인 : AuthenticationManagerBuilder.performBuild에 중단점
+  - Spring security가 기본 제공하는 DaoAuthenticationProvider의 멤버로 MyUserDetailService가 등록되어 있다. 
+  - 넘기다 보니 AnonymousAuthenticationProvider도 같이 등록되는 걸 확인.
+- 인증 시작점 확인 : ProviderManager.authenticate
+- UsernamePasswordAuthenticationToken에 대한 인증 시작점 확인 : AbstractUserDetailsAuthenticationProvider.authenticate
+  - 토큰 생성 지점 : UsernamePasswordAuthenticationFilter.attemptAuthentication (필터 체인 중 하나 )
+  - userDetails 찾은 후 추가 체크 : 
+    - preAuthenticationChecks.check(userDetail)
+    - DefaultPreAuthenticationChecks - (계정 Lock여부, 계정 만료여부 등.)
+    - postAuthenticationChecks.check 수행
+    - DefaultPostAuthenticationChecks - User credentials 만료 여부 확인
+  - 체크 끝나면 캐시(this.userCache.putUserInCache(user);)
+  - createSuccessAuthentication
+- 성공 Auth token에서 eraseCredentials 수행
+- 
+- 인증 오류 처리 지점 : DefaultAuthenticationEventPublisher.publishAuthenticationFailure
+  - org.springframework.context.event 에서 처리가 위임됨 
 ## SpringBoot Configuration
 #### @Enable Config
 - 미리 정의된 설정 파일. 
