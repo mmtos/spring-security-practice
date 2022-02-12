@@ -10,7 +10,7 @@
 
 ## TODO 
 - [X] Spring Security 기본 테이블이 아닌 custom 테이블 사용하기 (JPA에서 생성..)
-- [ ] 회원가입 및 탈퇴, 권한 구현.
+- [X] 회원가입 구현
 - [ ] JWT 도입
 
 ## JPA
@@ -18,11 +18,20 @@
 - @Id : 직접 할당
 - @Id @GeneratedValue : 자동생성 
 - https://gmlwjd9405.github.io/2019/08/12/primary-key-mapping.html
+
+- Setter없는 Entity : https://velog.io/@aidenshin/%EB%82%B4%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-JPA-%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%9E%91%EC%84%B1-%EC%9B%90%EC%B9%99
+- 
 ### table 생성 설정
 - spring boot의 경우 spring.jpa로 시작하는 설정프로퍼티를 통해 설정 가능함
 - spring.jpa.hibernate.ddl-auto: create
 - spring.jpa.show-sql: true
 - https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=rorean&logNo=221587154921
+
+### save & saveandflush 
+- save의 경우 persistance context에만 저장하고 추후 한번에 DB로 저장됨. 
+- saveandflush의 경우 명시적으로 persistance context에서 DB로 insert, update 쿼리를 보내게됨.
+
+
 
 ## UserDetails
 ### 디폴트 구현체 

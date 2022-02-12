@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 @AllArgsConstructor
-public class MyUserPrincipal implements UserDetails {
+public class MyUserDetails implements UserDetails {
 
     private MyUser myUser;
 
@@ -45,6 +45,6 @@ public class MyUserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return myUser.isEnabled();
+        return myUser.getIsEnabled();
     }
 }
