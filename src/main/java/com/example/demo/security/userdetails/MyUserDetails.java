@@ -1,12 +1,13 @@
-package com.example.demo.userservice;
+package com.example.demo.security.userdetails;
 
-import com.example.demo.entity.MyUser;
+import com.example.demo.domain.entity.MyUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+
 @AllArgsConstructor
 public class MyUserDetails implements UserDetails {
 
@@ -14,7 +15,6 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // UserDetails 반드시 확인 - null return 불가능
         return AuthorityUtils.NO_AUTHORITIES;
     }
 
