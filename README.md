@@ -5,13 +5,46 @@
   - https://spring.io/guides/topicals/spring-security-architecture/
   - https://docs.spring.io/spring-security/site/docs/5.0.5.RELEASE/reference/htmlsingle/
 
-- custom table 사용하기 : https://www.baeldung.com/spring-security-authentication-with-a-database
-- 
+- custom table 사용하기 
+  - https://www.baeldung.com/spring-security-authentication-with-a-database
+  - https://shinsunyoung.tistory.com/78?category=327358
+
+- JWT 도입 
+  - https://github.com/shinsunyoung/example-code/tree/master/spring-jwt
 
 ## TODO 
 - [X] Spring Security 기본 테이블이 아닌 custom 테이블 사용하기 (JPA에서 생성..)
 - [X] 회원가입 구현
-- [ ] JWT 도입
+- [X] JWT 도입
+
+## JWT 도입 과정 (io.jsonwebtoken.jjwt 라이브러리 사용)
+- HttpSecurity 설정값 변경
+  - Session생성 전략을 stateless로 지정. 세션이 만들어지지 않기때문에 기존 formLogin은 인증을 수행하더라도 로그인상태가 유지되지 않음
+  - 따라서 logout이 필요없어지고, 매번 인증을 거치게되므로 공격대상 사이트에 대한 로그인상태를 필요로하는 csrf에도 대응할 필요가 없다.
+  - formLogin은 최초 인증처리 후 토큰 생성 용도로 사용하였음
+    - formLogin은 기본적으로 인증성공시 페이지를 성공URL redirect하고, 실패시 실패URL로 forward한다.
+    - 인증 성공시 생성한 JWT토큰을 전달하기 위해 AuthenticationSuccessHandler를 구현하여 넣어주었다.
+  - 직접 JWT를 검사하는 필터를 만들어서 UsernamePasswordAuthenticationFilter앞에 넣어주었다. 
+    - JWT가 유효한 경우 SecurityContext에 Authentication을 넣어주어 UsernamePasswordAuthenticationFilter을 bypass하도록 했다.
+- JwtTokenProvider 구현
+  - 설정값들은 JwtProperties에 정리
+    - main클래스에 선언 : @EnableConfigurationProperties({JwtProperties.class})
+    - @ConstructorBinding
+    - JwtProperties에 prefix 지정 : @ConfigurationProperties(prefix = "jwt")
+    - application.yml에 설정 추가
+  - 현재 토큰 인증과정이 getUserDetailsOf에 구현되어 있음. 
+  - TODO : 추후 JwtTokenProvider클래스에서 AbstractUserDetailsAuthenticationProvider를 상속받아 Spring Security의 인증과정을 활용하는 방식으로 구현
+- 기타
+  - User 관련 엔드포인트를 위한 DTO(JoinUserRequestDto)생성
+  - 엔티티를 위한 DTO(MyUserDto)와 구분 하였음
+- 테스트
+  1. 회원 가입
+  2. 최초 로그인 하여 JWT 얻기 
+  3. PostMan을 이용해 인증헤더에 Bearer JWT 추가하여 /hello 페이지 확인 
+
+## JAVA API 
+- Collections.singleton() : return Immutable Set with just one element.
+- LocalDateTime to Date : https://hianna.tistory.com/613
 
 ## JPA
 ### Entity
